@@ -1,0 +1,79 @@
+version: '3.3'
+services:
+
+  # base config for all services in this compose
+  base: &gex_base
+    image: 'nginx'
+    restart: always
+    labels:
+      - "com.gex.release=0.1"
+      - "com.gex.prefix=website"
+    networks:
+      - test_net
+
+
+  mysql:
+    <<: *gex_base
+    container_name: website-mysql
+    image: 'mysql:5.7.15'
+    environment:
+      MYSQL_ROOT_PASSWORD: "PH_GEX_PASSWD1"
+    volumes:
+      #- ./containers/mysql/config:/etc/mysql/mysql.conf.d
+      - mysql_data:/var/lib/mysql
+
+
+  phpmyadmin:
+    <<: *gex_base
+    container_name: website-phpmyadmin
+    image: 'corbinu/docker-phpmyadmin'
+    links:
+      - mysql:mysql
+    ports:
+      - 8181:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: PH_GEX_PASSWD1
+      MYSQL_PORT_3306_TCP_ADDR: mysql
+
+  redis:
+    <<: *gex_base
+    container_name: website-redis
+    image: dockerhub.gex:5043/redis:main
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+
+  # Application: -----------------------------------------------------------------
+  app:
+    <<: *gex_base
+    container_name: website-app
+    image: dockerhub.gex:5043/app:main
+    volumes:
+      - app_apps:/home/app/apps
+      - app_log:/var/log/nginx/
+
+    ports:
+      - "28089:80"
+      - "28022:22"
+
+    labels:
+      prerun: 'touch /tmp/id.test'
+      postrun: 'cat /tmp/id.test'
+    dns: 10.1.0.19
+    extra_hosts:
+     - "git.gex:46.172.71.53"
+
+
+volumes:
+  mysql_data:
+  redis_data:
+  app_apps:
+  app_log:
+
+
+networks:
+  test_net:
+    external:
+      name: test_net

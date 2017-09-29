@@ -1,0 +1,17 @@
+{
+  "datacenter": "gex",
+  "data_dir": "/data/consul/consul-gex",
+  "log_level": "INFO",
+  "node_name": "consul-gex",
+  "server": true,
+  "client_addr": "<%= @consul_client_addr %>",
+  "bootstrap": true,
+  "bind_addr": "<%= @consul_bind_addr %>",
+  "ports": {
+    "dns": 10900,
+    "http": 10901,
+    "serf_lan": 10902,
+    "serf_wan": 10903,
+    "server": 10904
+  }
+}

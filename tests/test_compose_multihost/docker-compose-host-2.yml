@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+
+  base: &gex_base
+    image: 'nginx'
+    restart: always
+    labels:
+      - "com.gex.release=0.1"
+      - "com.gex.prefix=website"
+
+
+  phpmyadmin:
+    <<: *gex_base
+    container_name: website-phpmyadmin
+    image: 'corbinu/docker-phpmyadmin'
+    ports:
+      - 8181:80
+    restart: always
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: PH_GEX_PASSWD1
+      MYSQL_PORT_3306_TCP_ADDR: mysql
+    networks:
+      - test_net
+
+networks:
+  test_net:
+    external:
+      name: test_net

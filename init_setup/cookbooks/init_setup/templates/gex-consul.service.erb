@@ -1,0 +1,15 @@
+[Unit]
+Description=GEX Consul agent service
+After=network.target
+
+[Service]
+SyslogIdentifier=gex-consul
+ExecStart=/usr/bin/consul agent -ui -config-file /etc/consul/gex-consul.json >> /var/log/consul/consul.log 2>&1
+
+ExecStop=/usr/bin/pkill -f gex-consul
+ExecStopPost=/usr/bin/pkill -f gex-consul
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

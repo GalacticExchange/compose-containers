@@ -1,0 +1,103 @@
+version: '3.3'
+services:
+
+  # base config for all services in this compose
+  base: &gex_base
+    image: 'nginx'
+    restart: always
+    labels:
+      - "com.gex.prefix=core"
+    networks:
+      - test_net
+
+
+  mysql:
+    <<: *gex_base
+    container_name: gexcore-mysql
+    image: 'mysql:5.7.15'
+    environment:
+      MYSQL_ROOT_PASSWORD: "PH_GEX_PASSWD1"
+    volumes:
+      - ./containers/mysql/config:/etc/mysql/mysql.conf.d
+      - mysql_data:/var/lib/mysql
+
+
+  phpmyadmin:
+    <<: *gex_base
+    container_name: gexcore-phpmyadmin
+    image: 'corbinu/docker-phpmyadmin'
+    ports:
+      - 8181:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: PH_GEX_PASSWD1
+      MYSQL_PORT_3306_TCP_ADDR: mysql
+
+# TODO
+#  redis:
+#    <<: *gex_base
+#    container_name: gexcore-redis
+#    image: dockerhub.gex:5043/gex/redis
+#    build: ./containers/redis
+#    command: redis-server --appendonly yes
+#    volumes:
+#      - redis_data:/data
+
+  # TODO
+  eth_bootstrap:
+    container_name: gexcore-eth-bootnode
+    image: dockerhub.gex:5043/bootnode:main
+    command: 'geth --datadir=~/.ethereum/devchain --nodekeyhex=80767334e357b60e41092e87288d35da9ea3f6f07afd2a38f15ac85a64f488ae --rpcapi "db,personal,eth,net,web3" --rpccorsdomain="*" --networkid=456719 --rpc --rpcaddr="0.0.0.0"'
+    volumes:
+      - ./files/password:/root/files/password:ro
+      - ./files/genesis.json:/root/files/genesis.json:ro
+      - ./files/keystore:/root/.ethereum/devchain/keystore:rw
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+    - "30303:30303"
+    - "30303:30303/udp"
+    - "8545:8545"
+
+    # --nodekeyhex 80767334e357b60e41092e87288d35da9ea3f6f07afd2a38f15ac85a64f488ae
+    # enode://c8f362d19809d903a55bbef32052d4168ede760d086c92d1cb57f1cb557b29f5c8409684f527c861c43f1e9f2d510d9e4bbf92a6bc9542c0f12bf9c76888c55d
+
+  #TODO
+  proxy:
+    container_name: gexcore-proxy
+    image: dockerhub.gex:5043/proxy:main
+    command: /etc/bootstrap.sh
+
+
+  # Application: -----------------------------------------------------------------
+#  app:
+#    <<: *gex_base
+#    container_name: gexcore-app
+#    image: dockerhub.gex:5043/app:main
+#    build: ./containers/app
+#    volumes:
+#      - app_apps:/home/app/apps
+#      - app_log:/var/log/nginx/
+#
+#    ports:
+#      - "28089:80"
+#      - "28022:22"
+#
+#    labels:
+#      prerun: 'touch /tmp/id.test'
+#      postrun: 'cat /tmp/id.test'
+#    dns: 10.1.0.19
+#    extra_hosts:
+#     - "git.gex:46.172.71.53"
+
+
+volumes:
+  mysql_data:
+  redis_data:
+  app_apps:
+  app_log:
+
+
+networks:
+  test_net:
+    external:
+      name: test_net

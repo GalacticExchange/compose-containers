@@ -1,0 +1,50 @@
+{
+  "variables": {},
+  "min_packer_version": "0.9.0",
+  "builders": [
+    {
+      "type": "docker",
+      "image": "phusion/passenger-ruby23:0.9.20",
+      "pull": false,
+      "commit": true,
+      "changes": [
+        "CMD [\"/sbin/my_init\"]"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "chef-solo",
+      "cookbook_paths": [
+        "/home/dmitry/projects/compose-containers-webiste/build/containers/app/cookbooks"
+      ],
+      "run_list": [
+        "recipe[default::default]"
+      ],
+      "json": {
+        "attributes": {
+          "domain": "website1.devgex.net",
+          "domains": "website.local website1.devgex.net",
+          "app_env": "main"
+        }
+      },
+      "prevent_sudo": true
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "dockerhub.gex:5043/app",
+        "tag": "main"
+      },
+      {
+        "type": "docker-push",
+        "login": true,
+        "login_username": "gex",
+        "login_password": "PH_GEX_PASSWD1",
+        "login_server": "dockerhub.gex:5043"
+      }
+    ]
+  ]
+}

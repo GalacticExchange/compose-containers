@@ -1,0 +1,29 @@
+{
+  "app": {
+    "base_image": "phusion/passenger-ruby23:0.9.20",
+    "attributes": {
+      "domain": "website1.devgex.net",
+      "domains": "website.local website1.devgex.net",
+      "app_env": "main"
+    }
+  },
+  "bootnode": {
+    "base_image": "ubuntu",
+    "attributes": { }
+  },
+
+
+
+
+  // api containers
+  "api": {
+    "base_image": "base-ruby-passenger-nginx:2.3.3",
+    "attributes": {
+
+    }
+  }
+
+
+
+
+}

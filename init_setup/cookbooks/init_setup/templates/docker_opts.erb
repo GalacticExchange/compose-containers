@@ -1,0 +1,4 @@
+# Docker Upstart and SysVinit configuration file
+
+# --cluster-advertise eno1:2375
+DOCKER_OPTS="-H tcp://<%= @listen_ip %>:<%= @listen_port %> -H unix:///var/run/docker.sock --cluster-store consul://<%= @consul_ip %>:<%= @consul_port %>"

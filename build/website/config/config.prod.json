@@ -1,0 +1,14 @@
+{
+  "app": {
+    "base_image": "phusion/passenger-ruby23:0.9.20",
+    "attributes": {
+      "domain": "galacticexchange.io",
+      "domains": "galacticexchange.io www.galacticexchange.io",
+      "app_env": "production"
+    }
+  },
+  "redis": {
+    "base_image": "redis:3.2.9",
+    "attributes": { }
+  }
+}

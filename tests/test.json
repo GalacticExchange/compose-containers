@@ -1,0 +1,27 @@
+{
+  "variables": {},
+  "min_packer_version": "0.9.0",
+  "builders": [
+    {
+      "type": "docker",
+      "image": "nginx",
+      "commit": true
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "dockerhub.gex:5043/test-nginx",
+        "tag": "main"
+      },
+      {
+        "type": "docker-push",
+        "login": true,
+        "login_username": "gex",
+        "login_password": "PH_GEX_PASSWD1",
+        "login_server": "dockerhub.gex:5043"
+      }
+    ]
+  ]
+}

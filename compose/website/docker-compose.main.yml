@@ -1,0 +1,12 @@
+version: '3.3'
+services:
+
+  base: &gex_base
+    labels:
+      - "com.gex.env=main"
+
+  app:
+    environment:
+      APP_DOMAIN: website1.devgex.net
+      APP_DOMAINS: 'website.local website1.devgex.net'
+      APP_ENV: 'main'

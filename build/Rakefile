@@ -1,0 +1,84 @@
+require 'packer-config'
+require 'uri'
+require 'json'
+
+require_relative 'gex_builder'
+
+GEX_ENV = ['main', 'prod', 'dev']
+
+def get_containers(args)
+  env_name = args[:env]
+  version = args[:ver]
+  project = args[:project]
+
+  abort("Wrong ENV: #{env_name}") unless GEX_ENV.include?(env_name)
+
+  conf_file = File.read(File.join(Dir.pwd, "#{project}/config/config.#{env_name}.json"))
+
+  JSON.parse(conf_file)
+end
+
+desc 'Build and push to registry images for gex-compose'
+namespace :build do
+
+  desc 'Build all images for gex-compose'
+  task :all, [:project, :env, :ver] do |t, args|
+
+    containers = get_containers(args)
+
+    containers.each do |name, conf|
+
+       config = {
+          base_image: conf['base_image'],
+          container_name: name,
+          tag: args[:env],
+          project_name: args[:project],
+          json_custom: conf['attributes'],
+          changes: conf['changes'],
+          postprocessor: 'registry'
+      }
+
+      GexBuilder.new(config)
+
+    end
+
+  end
+
+  # desc 'Build client image'
+  # task :client, [:name, :env] do |t, args|
+  #
+  #   args = args.to_h
+  #
+  #   args[:project] = 'client'
+  #
+  #   containers = get_containers(args)
+  #
+  #   cont = containers.fetch(args[:name])
+  #   #abort("No such container: #{name}") unless cont
+  #
+  #   GexBuilder.build_client(args[:project], args[:name], cont['base_image'], args[:env], cont['attributes'], cont['changes'])
+  # end
+
+
+  desc 'Build single image'
+  task :image, [:project, :name, :env] do |t, args|
+
+    containers = get_containers(args)
+
+    cont = containers.fetch(args[:name])
+
+    config = {
+        base_image: cont['base_image'],
+        container_name: args[:name],
+        tag: args[:env],
+        project_name: args[:project],
+        json_custom: cont['attributes'],
+        changes: cont['changes'],
+        postprocessor: 'registry'
+    }
+
+    GexBuilder.new(config)
+  end
+
+
+end

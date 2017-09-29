@@ -1,0 +1,6 @@
+{
+  "kafka": {
+    "base_image": "ubuntu",
+    "attributes": { }
+  }
+}

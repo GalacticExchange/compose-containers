@@ -1,0 +1,14 @@
+{
+  "app": {
+    "base_image": "phusion/passenger-ruby23:0.9.20",
+    "attributes": {
+      "domain": "website1.devgex.net",
+      "domains": "website.local website1.devgex.net",
+      "app_env": "main"
+    }
+  },
+  "redis": {
+    "base_image": "redis:3.2.9",
+    "attributes": { }
+  }
+}

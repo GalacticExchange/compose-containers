@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  registry:
+    restart: always
+    image: registry:2
+    ports:
+      - 127.0.0.1:5000:5000
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+    volumes:
+      - ./containers/registry/data:/data
+
+  nginx:
+    restart: always
+    image: "nginx:1.9"
+    ports:
+      - 5043:443
+    links:
+      - registry:registry
+    volumes:
+      - ./containers/nginx/:/etc/nginx/conf.d
+
+
+  webui:
+    restart: always
+    image: 'atcol/docker-registry-ui'
+    ports:
+      - 8084:8080

@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+
+  base: &gex_base
+    extends:
+      file: ./compose-labels.yml
+      service: common
+    image: 'nginx'
+    restart: always
+
+
+  mysql:
+    <<: *gex_base
+    image: 'mysql:5.7.15'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "PH_GEX_PASSWD1"
+    volumes:
+      - ./containers/mysql/config:/etc/mysql/mysql.conf.d
+      - mysql_data:/var/lib/mysql
