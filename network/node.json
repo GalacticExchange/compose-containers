@@ -1,0 +1,8 @@
+{
+  "attributes": {
+    "overlay_cidr" : "51.0.0.0/8"
+  },
+  "run_list": [
+    "recipe[network::weave_client]"
+  ]
+}

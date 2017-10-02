@@ -1,7 +1,14 @@
-### Weave Net setup
-
-On host_1:
+### Init weave server:
 
 ```bash
-weave launch --ipalloc-range x.x.x.x/y --password YOUR_PASSWORD
+sudo weave_pswd=YOUR_PASSWORD chef-solo -c solo.rb -j server.json
 ```
+
+ 
+### Connect to weave server:
+
+```bash
+sudo server_ip=SERVER_IP  overlay_client_ip=YOUR_OVERLAY_IP weave_pswd=YOUR_PASSWORD -c solo.rb -j node.json
+```
+
+This will setup weave systemd services both on server and client machines. 
