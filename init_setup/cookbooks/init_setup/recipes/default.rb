@@ -4,37 +4,39 @@
 #=========================================================================
 # install consul
 
-cookbook_file '/tmp/consul.zip' do
-  source 'consul.zip'
-  action :create
-end
-
-bash 'install consul' do
-  code <<-EOH
-    unzip /tmp/consul.zip -d /tmp/ 
-    cp /tmp/consul /usr/bin/
-  EOH
-end
-
-# setup consul
-directory '/etc/consul'
-directory '/var/log/consul'
-
-template '/etc/consul/gex-consul.json' do
-  source 'gex-consul.json.erb'
-  variables(
-      consul_client_addr: node['attributes'].fetch('overlay_ip'),
-      consul_bind_addr: node['attributes'].fetch('overlay_ip')
-  )
-end
-
-template '/etc/systemd/system/gex-consul.service' do
-  source 'gex-consul.service.erb'
-end
-
-service 'gex-consul' do
-  action [:enable, :start]
-end
+# cookbook_file '/tmp/consul.zip' do
+#   source 'consul.zip'
+#   action :create
+# end
+#
+# bash 'install consul' do
+#   code <<-EOH
+#     consul -v || {
+#       unzip /tmp/consul.zip -d /tmp/
+#       cp /tmp/consul /usr/bin/
+#     }
+#   EOH
+# end
+#
+# # setup consul
+# directory '/etc/consul'
+# directory '/var/log/consul'
+#
+# template '/etc/consul/gex-consul.json' do
+#   source 'gex-consul.json.erb'
+#   variables(
+#       consul_client_addr: node['attributes'].fetch('overlay_ip'),
+#       consul_bind_addr: node['attributes'].fetch('overlay_ip')
+#   )
+# end
+#
+# template '/etc/systemd/system/gex-consul.service' do
+#   source 'gex-consul.service.erb'
+# end
+#
+# service 'gex-consul' do
+#   action [:enable, :start]
+# end
 
 #=========================================================================
 
@@ -60,27 +62,27 @@ bash 'docker post install steps' do
 end
 
 # setup docker service
-service 'docker' do
-  action [:stop]
-end
-
-template '/lib/systemd/system/docker.service' do
-  source 'docker.service.erb'
-end
-
-template '/etc/default/docker_opts' do
-  source 'docker_opts.erb'
-  variables(
-      listen_ip: node['attributes'].fetch('overlay_ip'),
-      listen_port: 2375,
-      consul_ip: node['attributes'].fetch('overlay_ip'),
-      consul_port: 10901
-  )
-end
-
-service 'docker' do
-  action [:start]
-end
+# service 'docker' do
+#   action [:stop]
+# end
+#
+# template '/lib/systemd/system/docker.service' do
+#   source 'docker.service.erb'
+# end
+#
+# template '/etc/default/docker_opts' do
+#   source 'docker_opts.erb'
+#   variables(
+#       listen_ip: node['attributes'].fetch('overlay_ip'),
+#       listen_port: 2375,
+#       consul_ip: node['attributes'].fetch('overlay_ip'),
+#       consul_port: 10901
+#   )
+# end
+#
+# service 'docker' do
+#   action [:start]
+# end
 
 
 #=========================================================================
@@ -90,8 +92,11 @@ end
 
 bash 'docker-compose install' do
   code <<-EOH
-    curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
+    docker-compose -v || {
+      curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+      chmod +x /usr/local/bin/docker-compose
+    }
+
   EOH
 end
 
@@ -99,3 +104,12 @@ end
 
 
 directory '/data'
+
+bash 'install weave' do
+  code <<-EOH
+    weave version || {
+      curl -L git.io/weave -o /usr/local/bin/weave
+      chmod a+x /usr/local/bin/weave
+    }
+  EOH
+end

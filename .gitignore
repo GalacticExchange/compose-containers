@@ -13,3 +13,6 @@ gen### Redis template
 
 
 registry/containers/*
+
+network/nodes
+network/local-mode-cache
