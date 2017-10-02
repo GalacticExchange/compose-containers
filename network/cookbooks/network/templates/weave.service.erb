@@ -8,6 +8,7 @@ After=docker.service
 EnvironmentFile=-/etc/sysconfig/weave
 ExecStartPre=/usr/local/bin/weave launch --ipalloc-range <%= @overlay_cidr %> --password <%= @weave_pswd %>
 ExecStart=/usr/bin/docker attach weave
+ExecStartPost=/usr/local/bin/weave expose <%= @overlay_server_ip %>/8
 ExecStop=/usr/local/bin/weave stop
 
 [Install]

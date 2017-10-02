@@ -3,7 +3,8 @@ template '/etc/systemd/system/weave.service' do
   source 'weave.service.erb'
   variables(
       overlay_cidr: node['attributes'].fetch('overlay_cidr'),
-      weave_pswd: ENV.fetch('weave_pswd')
+      weave_pswd: ENV.fetch('weave_pswd'),
+      overlay_server_ip: node['attributes'].fetch('overlay_server_ip')
   )
 end
 
@@ -15,7 +16,4 @@ service 'weave' do
   action [:enable, :start]
 end
 
-execute 'expose server ip' do
-  command "weave expose #{node['attributes'].fetch('overlay_server_ip')}/32"
-end
 
