@@ -5,41 +5,38 @@
 
 bash 'update' do
   code <<-EOH
-  apt-get update --fix-missing
+    apt-get update --fix-missing
   EOH
 end
 
 
-### base packages
+# base packages
 %w(net-tools netcat).each do |pkg|
-  apt_package pkg
+  apt_package(pkg)
 end
 
 
 # redis client tools
 %w(redis-tools).each do |pkg|
-  apt_package pkg
+  apt_package(pkg)
 end
 
 
-### install docker
-
+# install docker
 bash 'install docker' do
   code <<-EOH
-  apt-get install -y docker
+    apt-get install -y docker
   EOH
 
 end
 
 
-#### nfs client
+# nfs client
 bash 'nfs-common' do
   code <<-EOH
-  apt-get install  -y nfs-common
+    apt-get install -y nfs-common
   EOH
 end
-
-
 
 
 
@@ -64,21 +61,19 @@ end
 
 bash 'root pwd' do
   code <<-EOH
-echo 'root:PH_GEX_PASSWD1' | chpasswd
-
+    echo 'root:PH_GEX_PASSWD1' | chpasswd
   EOH
 end
-#echo -e "root\nPH_GEX_PASSWD1" | passwd root
-
 
 ### hosts allow/deny
 template "/etc/hosts.allow" do
+  cookbook "default"
   source "etc/hosts.allow.erb"
 end
 template "/etc/hosts.deny" do
+  cookbook "default"
   source "etc/hosts.deny.erb"
 end
-
 
 ### ssh server
 
@@ -87,10 +82,12 @@ execute 'enable ssh' do
 end
 
 template "/etc/ssh/sshd_config" do
+  cookbook "default"
   source "ssh/sshd_config.erb"
 end
 
 execute 'fix /var/run/sshd' do
+
   command 'chown root:root /var/run/sshd && chmod 700 /var/run/sshd'
 end
 
@@ -98,6 +95,7 @@ end
 
 ### ssh client
 template "/etc/ssh/ssh_config" do
+  cookbook "default"
   source "ssh/ssh_config"
 end
 
@@ -112,9 +110,11 @@ end
 
 # ssh key - root
 template "/root/.ssh/id_rsa" do
+  cookbook "default"
   source "ssh-keys/root/id_rsa"
 end
 template "/root/.ssh/id_rsa.pub" do
+  cookbook "default"
   source "ssh-keys/root/id_rsa.pub"
 end
 
@@ -122,6 +122,7 @@ end
 # authorized_keys
 
 template "/root/.ssh/authorized_keys" do
+  cookbook "default"
   source "ssh/authorized_keys.erb"
 end
 
@@ -131,12 +132,14 @@ end
 
 ## keys for deploy to github
 template "/root/.ssh/config" do
+  cookbook "default"
   source "ssh/config.erb"
 
   mode '400'
 end
 
 template "/root/.ssh/github.apihub.key" do
+  cookbook "default"
   source "ssh-deploy-keys/github.apihub.key"
   mode '400'
 end
@@ -189,6 +192,7 @@ end
 ### nginx config
 
 template '/etc/nginx/nginx.conf' do
+  cookbook "default"
   source "nginx/nginx.conf.erb"
 
   mode '0775'
@@ -202,6 +206,7 @@ directory '/var/log/passenger/' do
 end
 
 template '/etc/nginx/passenger.conf' do
+  cookbook "default"
   source "passenger/passenger.conf.erb"
 
   mode '0775'
@@ -217,6 +222,7 @@ execute 'nginx remove default server' do
 end
 
 template "/etc/nginx/sites-available/default.conf" do
+  cookbook "default"
   source "nginx-sites/default.conf.erb"
 
   mode '0775'
@@ -288,6 +294,7 @@ include_recipe 'god::install_rvm'
 # god config
 
 template "/opt/god/master.conf" do
+  cookbook "default"
   source "god/master.conf.erb"
 
 end
@@ -295,6 +302,7 @@ end
 
 # god service
 template '/etc/init.d/god' do
+  cookbook "default"
   source 'god/etc_initd_god.erb'
 
   mode '0775'
@@ -309,6 +317,7 @@ end
 end
 
 template '/etc/service/god/run' do
+  cookbook "default"
   source 'god/runit.sh'
 
   mode '0775'
@@ -395,11 +404,11 @@ end
 
 
 ### apps on nginx
-node.run_state['apps'] = node['apps']
+node.run_state['apps'] = node['attributes']['apps']
 
-node['apps'].each do |name, opt|
+node['attributes']['apps'].each do |name, opt|
   node.run_state['app_name'] = name
-  node.run_state['app'] = node['apps'][name]
+  node.run_state['app'] = node['attributes']['apps'][name]
 
   include_recipe 'app-rails'
 end
@@ -411,12 +420,13 @@ execute 'logrotate' do
   command 'apt-get install -y logrotate'
 end
 
-node.run_state['logrotate'] = node['logrotate']
+node.run_state['logrotate'] = node['attributes']['logrotate']
 
-node['logrotate'].each do |opt|
+node['attributes']['logrotate'].each do |opt|
   node.run_state['logrotate'] = opt
 
   template "/etc/logrotate.d/#{opt['name']}.conf" do
+    cookbook "default"
     source "logrotate/logrotate.conf.erb"
 
     mode '0775'
@@ -450,6 +460,7 @@ directory '/opt/bootstrap' do
 end
 
 remote_directory '/opt/bootstrap/cookbooks' do
+  cookbook 'default'
   source 'bootstrap/cookbooks'
   owner 'root'
   group 'root'
@@ -499,6 +510,7 @@ end
 ### startup scripts for phusion
 
 template "/etc/my_init.d/01_myinit.sh" do
+  cookbook "default"
   source "init/myinit.sh.erb"
 end
 execute 'chmod' do
@@ -506,6 +518,7 @@ execute 'chmod' do
 end
 
 template "/etc/my_init.d/02_bootstrap.sh" do
+  cookbook "default"
   source "init/bootstrap.sh.erb"
 end
 execute 'chmod' do

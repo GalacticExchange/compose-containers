@@ -28,7 +28,7 @@ namespace :build do
 
     containers.each do |name, conf|
 
-       config = {
+      config = {
           base_image: conf['base_image'],
           container_name: name,
           tag: args[:env],

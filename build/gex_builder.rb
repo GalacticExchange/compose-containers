@@ -1,11 +1,14 @@
 require 'aws-sdk'
+require 'vault'
 
 class GexBuilder
 
+  gex_registry_cred =  Vault.logical.read("secret/gex_registry_cred").data
+
   GEX_REGISTRY = {
-      url: 'dockerhub.gex:5043',
-      username: 'gex',
-      password: 'PH_GEX_PASSWD1'
+      url: gex_registry_cred[:url],
+      username: gex_registry_cred[:username],
+      password: gex_registry_cred[:password]
   }.freeze
 
 
@@ -40,15 +43,14 @@ class GexBuilder
     default_cookbooks_path = [File.join(File.dirname(__FILE__), @config.fetch(:project_name), 'containers', @config.fetch(:container_name), 'cookbooks')]
 
     cookbook_paths = @config[:cookbooks_path] ? @config[:cookbooks_path] : default_cookbooks_path
-
-    #if @config[:include_common]
-      cookbook_paths.push(
-          File.join(File.dirname(__FILE__), @config.fetch(:project_name), 'cookbook_common')
-      )
-    #end
+    
+    cookbooks_base_dir = File.join(File.dirname(__FILE__), @config.fetch(:project_name), 'cookbooks', '*')
+    Dir[cookbooks_base_dir].each do |cookbook_path|
+      cookbook_paths.push(cookbook_path)
+      puts "Cookbooks dir #{cookbook_path} added"
+    end
 
     provisioner.cookbook_paths(cookbook_paths)
-
 
     run_list = @config[:run_list] || ["recipe[default::default]"]
     provisioner.run_list(run_list)

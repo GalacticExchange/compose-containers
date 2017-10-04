@@ -16,13 +16,40 @@
     "attributes": {
       "gateway": "46.172.71.33"
     }
-  },
+ },
 
 
   // api containers
   "api": {
     "base_image": "base-ruby-passenger-nginx:2.3.3",
     "attributes": {
+      "apps":{
+        "apihub": {
+          "app_name": "apihub",
+          "app_env": "main",
+          "app_domain": "api.galacticexchange.io",
+          "app_domain_aliases": [
+            "hub.galacticexchange.io",
+            "api.gex",
+            "api.devgex.net",
+            "hub.gex", "devapi.gex"
+          ]
+        }
+      },
+      "logrotate": [
+        {
+          "name": "gex_api_log",
+          "filepath": "/var/www/apps/apihub/shared/log/*.log"
+        },
+        {
+          "name": "god",
+          "filepath": "/var/www/logs/god.log"
+        }
+      ],
+      "ssh": {
+        "keys": [],
+        "pub_keys_content": ["pub_key"]
+      }
 
     }
   },
