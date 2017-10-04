@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -e
+
+sh /opt/bootstrap/init.sh
+
+exec /sbin/my_init

@@ -1,0 +1,32 @@
+server {
+    <% if node.run_state['app']['app_port'] %>
+      listen <%=node.run_state['app']['app_port']%>;
+    <% else %>
+    listen 80;
+    <% end %>
+
+
+  <% if node.run_state['app']['app_domain_aliases'] %>
+  server_name <%=node.run_state['app']['app_domain']%> <%=node.run_state['app']['app_domain_aliases'].join(' ') %>;
+  <% else %>
+  server_name <%=node.run_state['app']['app_domain']%>;
+  <% end %>
+
+
+  passenger_enabled on;
+  passenger_app_env <%=node.run_state['app']['app_env']%>;
+
+  passenger_start_timeout 300;
+
+  root /var/www/apps/<%=node.run_state['app_name']%>/current/public;
+
+  # maintenance page
+  if (-f $document_root/system/maintenance.html) {
+      return 503;
+  }
+
+    error_page 503 @maintenance;
+    location @maintenance {
+        rewrite ^(.*)$ /system/maintenance.html break;
+    }
+}

@@ -1,0 +1,42 @@
+#!/bin/sh
+
+echo "$(date). started" >> '/opt/bootstrap/bootstrap.log'
+
+# check if already provisioned
+if [ -f /opt/bootstrap/bootstraped.txt ] ; then
+    echo 'already provisioned. Exit' >> '/opt/bootstrap/bootstrap.log'
+else
+    # provision
+
+    # hosts
+    <% node['hosts'].each do |r| %>
+      echo <%="#{r[0]} #{r[1]}"%> >> /etc/hosts
+    <% end %>
+
+
+    # apihub
+
+    # db for apihub
+    mysql -h mysql -u root -p<%=node['mysql']['root_password']%> mysql < /opt/bootstrap/init_mysql.sql
+    #rm -f /opt/bootstrap/init_mysql.sql
+
+
+    # apps
+
+    mkdir -p /var/www/apps/apihub
+    #mkdir -p /var/www/apps/apihub/current/public/
+
+    #echo 'welcome' > '/var/www/apps/apihub/current/public/welcome.html'
+
+    service nginx reload
+
+    # god
+    service god restart
+
+
+    # done
+    echo "$(date). finished" >> '/opt/bootstrap/bootstrap.log'
+    echo '1' > '/opt/bootstrap/bootstraped.txt'
+
+fi
+

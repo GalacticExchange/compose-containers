@@ -1,0 +1,8 @@
+<%=node.run_state['logrotate']['filepath']%> {
+	weekly
+	rotate 8
+	compress
+	delaycompress
+	missingok
+	notifempty
+}

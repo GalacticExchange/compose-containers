@@ -1,0 +1,15 @@
+#!/bin/sh
+
+export TERM=xterm
+
+#cd /opt/bootstrap && ./init.sh
+
+# run always
+echo "$(date). init" >> /opt/bootstrap/bootstrap.log
+
+# using chef
+cd /opt/bootstrap/ && chef-client -z -j /opt/bootstrap/config.json --override-runlist "recipe[server::init]"
+
+
+#
+echo "$(date). init done" >> /opt/bootstrap/bootstrap.log

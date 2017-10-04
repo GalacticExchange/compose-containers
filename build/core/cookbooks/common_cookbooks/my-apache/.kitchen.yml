@@ -1,0 +1,26 @@
+---
+driver:
+  name: vagrant
+
+
+provisioner:
+  name: chef_zero
+
+# Uncomment the following verifier to leverage Inspec instead of Busser (the
+# default verifier)
+# verifier:
+#   name: inspec
+
+platforms:
+  - name: ubuntu1404
+    driver:
+      box: ubuntu:14.04
+      box_url: ubuntu:14.04
+      network:
+        - ["private_network", {ip: "51.1.99.1"}]
+
+suites:
+  - name: default
+    run_list:
+      - recipe[my-apache::default]
+    attributes:
