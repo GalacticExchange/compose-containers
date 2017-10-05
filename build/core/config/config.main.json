@@ -16,8 +16,13 @@
     "attributes": {
       "gateway": "46.172.71.33"
     }
+
  },
 
+  "provisioner": {
+    "base_image": "ubuntu",
+    "attributes": {}
+  },
 
   // api containers
   "api": {
@@ -53,9 +58,6 @@
 
     }
   },
-
-
-
 
   "openvpn": {
     "base_image": "ubuntu",
