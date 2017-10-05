@@ -15,7 +15,7 @@ services:
     restart: always
     image: "nginx:1.9"
     ports:
-      - 5043:443
+      - 51.1.0.51:5043:443
     links:
       - registry:registry
     volumes:
@@ -26,4 +26,4 @@ services:
     restart: always
     image: 'atcol/docker-registry-ui'
     ports:
-      - 8084:8080
+      - 51.1.0.51:8084:8080
