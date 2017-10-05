@@ -11,7 +11,6 @@ class GexBuilder
       password: gex_registry_cred[:password]
   }.freeze
 
-
   # config  - Hash
   def initialize(config)
     @config = config

@@ -4,7 +4,7 @@ Images in registry: https://dockerhub.gex:5043/v2/_catalog
 
 ``` 
 https://gex:PH_GEX_PASSWD1@dockerhub.gex:5043/v2/
-curl https://gex:PH_GEX_PASSWD1@dockerhub.gex:5043/v2/
+curl -k https://gex:PH_GEX_PASSWD1@dockerhub.gex:5043/v2/
 ```
 
 Manually pull from private registry:
