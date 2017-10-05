@@ -1,7 +1,7 @@
 
 template '/etc/systemd/system/weave.service' do
   cookbook 'network'
-  source 'weave.service.erb'
+  source 'weave_client.service.erb'
   variables(
       overlay_cidr: node['attributes'].fetch('overlay_cidr'),
       server_ip: ENV.fetch('server_ip'),
