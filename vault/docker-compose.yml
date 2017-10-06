@@ -5,11 +5,13 @@ services:
   consul:
     image: "consul"
     hostname: "consul"
-    command: "agent -dev -client 0.0.0.0"
+    command: "agent -bootstrap -server -client 0.0.0.0"
     ports:
       - "8400:8400"
       - "8500:8500"
       - "8600:53/udp"
+    volumes:
+      - ./files/consul_data:/consul/data
     networks:
       weave:
         ipv4_address: 51.0.2.1
@@ -26,8 +28,9 @@ services:
     ports:
       - "8200:8200"
     volumes:
-      - ./config/vault:/config
-      - ./config/vault/policies:/policies
+      - ./files/file:/vault/file
+      - ./files/config/vault:/config
+      - ./files/config/vault/policies:/policies
     entrypoint: vault server -config=/config/with-consul.hcl
     restart: unless-stopped
     networks:

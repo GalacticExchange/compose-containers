@@ -8,13 +8,20 @@ services:
     labels:
       - "com.gex.prefix=core"
 
+  # api containers
+  api:
+    <<: *gex_base
+    container_name: gexcore-api
+    image: dockerhub.gex:5043/api:main
+    #environment:
+      #MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
 
   mysql:
     <<: *gex_base
     container_name: gexcore-mysql
     image: 'mysql:5.7.15'
     environment:
-      MYSQL_ROOT_PASSWORD: "PH_GEX_PASSWD1"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     volumes:
       - ./containers/mysql/config:/etc/mysql/mysql.conf.d
       - mysql_data:/var/lib/mysql
@@ -28,18 +35,18 @@ services:
       - 8181:80
     environment:
       MYSQL_USERNAME: root
-      MYSQL_ROOT_PASSWORD: PH_GEX_PASSWD1
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       MYSQL_PORT_3306_TCP_ADDR: mysql
 
-# TODO
-#  redis:
-#    <<: *gex_base
-#    container_name: gexcore-redis
-#    image: dockerhub.gex:5043/gex/redis
-#    build: ./containers/redis
-#    command: redis-server --appendonly yes
-#    volumes:
-#      - redis_data:/data
+
+  redis:
+    <<: *gex_base
+    container_name: gexcore-redis
+    image: redis
+    #build: ./containers/redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
 
   # TODO
   eth_bootnode:
