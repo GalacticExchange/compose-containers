@@ -66,6 +66,7 @@ services:
     command: /etc/bootstrap.sh
 
   provisioner:
+    hostname: provisioner
     container_name: gexcore-provisioner
     image: dockerhub.gex:5043/provisioner:main
     command: /sbin/my_init
