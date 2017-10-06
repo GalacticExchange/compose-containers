@@ -20,7 +20,7 @@
  },
 
   "provisioner": {
-    "base_image": "ubuntu",
+    "base_image": "phusion/baseimage",
     "attributes": {}
   },
 

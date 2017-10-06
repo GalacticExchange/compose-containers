@@ -7,8 +7,6 @@ services:
     restart: always
     labels:
       - "com.gex.prefix=core"
-    networks:
-      - test_net
 
 
   mysql:
@@ -54,9 +52,9 @@ services:
       - ./files/keystore:/root/.ethereum/devchain/keystore:rw
       - /etc/localtime:/etc/localtime:ro
     ports:
-    - "30303:30303"
-    - "30303:30303/udp"
-    - "8545:8545"
+      - "30303:30303"
+      - "30303:30303/udp"
+      - "8545:8545"
 
     # --nodekeyhex 80767334e357b60e41092e87288d35da9ea3f6f07afd2a38f15ac85a64f488ae
     # enode://c8f362d19809d903a55bbef32052d4168ede760d086c92d1cb57f1cb557b29f5c8409684f527c861c43f1e9f2d510d9e4bbf92a6bc9542c0f12bf9c76888c55d
@@ -67,7 +65,13 @@ services:
     image: dockerhub.gex:5043/proxy:main
     command: /etc/bootstrap.sh
 
-
+  provisioner:
+    container_name: gexcore-provisioner
+    image: dockerhub.gex:5043/provisioner:main
+    command: /sbin/my_init
+    network:
+      weave:
+        ipv4_address: 51.0.0.55
   # Application: -----------------------------------------------------------------
 #  app:
 #    <<: *gex_base
@@ -98,6 +102,9 @@ volumes:
 
 
 networks:
-  test_net:
+  public:
     external:
-      name: test_net
+      name: public
+  weave:
+    external:
+      name: weave
