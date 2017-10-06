@@ -69,7 +69,7 @@ services:
     container_name: gexcore-provisioner
     image: dockerhub.gex:5043/provisioner:main
     command: /sbin/my_init
-    network:
+    networks:
       weave:
         ipv4_address: 51.0.0.55
   # Application: -----------------------------------------------------------------
