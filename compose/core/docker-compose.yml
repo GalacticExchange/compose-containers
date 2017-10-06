@@ -42,7 +42,7 @@ services:
 #      - redis_data:/data
 
   # TODO
-  eth_bootstrap:
+  eth_bootnode:
     container_name: gexcore-eth-bootnode
     image: dockerhub.gex:5043/bootnode:main
     command: 'geth --datadir=~/.ethereum/devchain --nodekeyhex=80767334e357b60e41092e87288d35da9ea3f6f07afd2a38f15ac85a64f488ae --rpcapi "db,personal,eth,net,web3" --rpccorsdomain="*" --networkid=456719 --rpc --rpcaddr="0.0.0.0"'
@@ -59,12 +59,6 @@ services:
     # --nodekeyhex 80767334e357b60e41092e87288d35da9ea3f6f07afd2a38f15ac85a64f488ae
     # enode://c8f362d19809d903a55bbef32052d4168ede760d086c92d1cb57f1cb557b29f5c8409684f527c861c43f1e9f2d510d9e4bbf92a6bc9542c0f12bf9c76888c55d
 
-  #TODO
-  proxy:
-    container_name: gexcore-proxy
-    image: dockerhub.gex:5043/proxy:main
-    command: /etc/bootstrap.sh
-
   provisioner:
     hostname: provisioner
     container_name: gexcore-provisioner
@@ -73,6 +67,8 @@ services:
     networks:
       weave:
         ipv4_address: 51.0.0.55
+    volumes:
+      - /projects:/projects
   # Application: -----------------------------------------------------------------
 #  app:
 #    <<: *gex_base
