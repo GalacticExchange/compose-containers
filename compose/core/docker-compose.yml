@@ -1,3 +1,5 @@
+# Set ENV_IP to run this compose. dev=2, main=1
+
 version: '3.3'
 services:
 
@@ -13,6 +15,10 @@ services:
     <<: *gex_base
     container_name: gexcore-api
     image: dockerhub.gex:5043/api:main
+    tty: true
+    networks:
+      weave:
+        ipv4_address: 51.0.${ENV_IP}.20
     #environment:
       #MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
 
@@ -73,7 +79,7 @@ services:
     command: /sbin/my_init
     networks:
       weave:
-        ipv4_address: 51.0.0.55
+        ipv4_address: 51.0.${ENV_IP}.55
     volumes:
       - /projects:/projects
   # Application: -----------------------------------------------------------------
