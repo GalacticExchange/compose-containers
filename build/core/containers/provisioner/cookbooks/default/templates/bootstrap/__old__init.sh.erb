@@ -1,0 +1,24 @@
+#!/bin/sh
+
+export TERM=xterm
+
+
+# run always
+echo "$(date). init" >> /opt/bootstrap.log
+
+# using chef
+cd /opt/bootstrap/
+chef-client -z -j /opt/bootstrap/config.json --override-runlist "recipe[server::init]"
+
+
+# hosts
+<% node['hosts'].each do |r| %>
+echo "<%=r[0]%> <%=r[1]%>" >> /etc/hosts
+<% end %>
+
+
+# mount
+mount -a
+
+#
+#echo "$(date). init done" >> /opt/bootstrap.log

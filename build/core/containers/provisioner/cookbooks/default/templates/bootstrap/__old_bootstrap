@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+bash -c 'cd /opt/bootstrap && ./init.sh'
+bash -c 'cd /opt/bootstrap && ./bootstrap.sh'
+
+exec /sbin/my_init
+
+
+

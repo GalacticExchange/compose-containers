@@ -1,0 +1,19 @@
+#!/bin/sh
+
+export TERM=xterm
+
+echo "$(date). start" >> '/opt/bootstrap/bootstrap.log'
+
+# check if already provisioned
+if [ -f /opt/bootstrap/bootstraped.txt ] ; then
+    echo 'already provisioned. Exit' >> '/opt/bootstrap/bootstrap.log'
+else
+
+    cd /opt/bootstrap && ./configure.sh
+
+    # done
+    echo "$(date). finished" >> '/opt/bootstrap/bootstrap.log'
+    echo '1' > '/opt/bootstrap/bootstraped.txt'
+
+fi
+
