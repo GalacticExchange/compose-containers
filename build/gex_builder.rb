@@ -55,7 +55,11 @@ class GexBuilder
     provisioner.run_list(run_list)
 
     json = @config[:json_custom] || {}
-    provisioner.json({attributes: json})
+
+    secrets =  Vault.logical.read("secret/builder").data
+    container_secrets = secrets[@config.fetch(:tag).to_sym][@config.fetch(:container_name).to_sym]  rescue {}
+
+    provisioner.json({attributes: json, secrets: container_secrets})
 
     provisioner.prevent_sudo(true)
   end

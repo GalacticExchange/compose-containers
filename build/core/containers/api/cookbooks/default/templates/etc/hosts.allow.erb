@@ -8,7 +8,7 @@
 # daemon name. See rpcbind(8) and rpc.mountd(8) for further information.
 #
 
-sshd: <%= node['office_ips'] %>
+sshd: <%= node['attributes']['office_ips'] %>
 sshd: 51.0.0.0/255.0.0.0
 sshd: 127.0.0.0/255.0.0.0
 sshd: 10.0.0.0/255.0.0.0

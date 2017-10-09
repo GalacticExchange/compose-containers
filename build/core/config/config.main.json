@@ -28,6 +28,9 @@
   "api": {
     "base_image": "base-ruby-passenger-nginx:2.3.3",
     "attributes": {
+
+      "office_ips":  "46.172.71.50, 46.172.71.53, 46.172.71.54, 10., 127., 51., 172.82.",
+
       "apps":{
         "apihub": {
           "app_name": "apihub",
