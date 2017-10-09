@@ -11,6 +11,7 @@ gen### Redis template
 
 *.rdb
 
+*build.json
 
 registry/containers/*
 
