@@ -82,6 +82,17 @@ services:
         ipv4_address: 51.0.${ENV_IP}.55
     volumes:
       - /projects:/projects
+
+  openvpn:
+    hostname: openvpn
+    container_name: gexcore-openvpn
+    image: dockerhub.gex:5043/openvpn:main
+    command: /etc/bootstrap.sh
+    networks:
+      weave:
+        ipv4_address: 51.0.${ENV_IP}.8
+    volumes:
+      - /projects:/projects
   # Application: -----------------------------------------------------------------
 #  app:
 #    <<: *gex_base
