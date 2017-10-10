@@ -30,7 +30,7 @@ execute 'install consul' do
   command 'unzip /tmp/consul.zip -d /tmp/ && cp /tmp/consul /usr/bin/'
 end
 
-include_recipe 'common::default'
+include_recipe 'core_common::default'
 
 execute 'clean' do
   command 'apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /var/tmp/*'

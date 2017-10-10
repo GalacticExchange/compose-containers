@@ -1,4 +1,4 @@
-name             'common'
+name             'core_common'
 maintainer       'YOUR_COMPANY_NAME'
 maintainer_email 'YOUR_EMAIL'
 license          'All rights reserved'
