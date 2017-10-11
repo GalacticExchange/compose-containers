@@ -1,3 +1,5 @@
+# Set ENV_IP to run this compose. dev=2, main=1
+
 version: '3.3'
 
 services:
@@ -16,7 +18,7 @@ services:
     restart: unless-stopped
     networks:
       weave:
-        ipv4_address: 51.0.2.2
+        ipv4_address: 51.0.${ENV_IP}.2
 
 networks:
   weave:
