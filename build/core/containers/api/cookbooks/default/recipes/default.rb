@@ -58,10 +58,11 @@ end
 
 
 ### root pwd
+machine_pwd = node['secrets']['machine_pwd']
 
 bash 'root pwd' do
   code <<-EOH
-    echo 'root:PH_GEX_PASSWD1' | chpasswd
+    echo 'root:#{machine_pwd}' | chpasswd
   EOH
 end
 
@@ -87,7 +88,6 @@ template "/etc/ssh/sshd_config" do
 end
 
 execute 'fix /var/run/sshd' do
-
   command 'chown root:root /var/run/sshd && chmod 700 /var/run/sshd'
 end
 
@@ -636,3 +636,5 @@ rm -rf /var/lib/apt/lists/* /var/tmp/* /etc/dpkg/dpkg.cfg.d/02apt-speedup
 end
 
 #rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/dpkg/dpkg.cfg.d/02apt-speedup
+
+include_recipe 'default::bootstrap'
