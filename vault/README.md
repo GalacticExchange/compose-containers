@@ -6,6 +6,11 @@
     docker-compose up -d
 ```
 
+### Current configuration
+
+- Storage Backend: **Filesystem**
+- Data dir: **/mnt/vault/data**
+
 
 ### Setup Vault
 

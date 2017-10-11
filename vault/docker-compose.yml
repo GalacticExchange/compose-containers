@@ -1,28 +1,8 @@
 version: '3.3'
 
 services:
-
-  consul:
-    image: "consul"
-    hostname: "consul"
-    command: "agent -bootstrap -server -client 0.0.0.0"
-    ports:
-      - "8400:8400"
-      - "8500:8500"
-      - "8600:53/udp"
-    volumes:
-      - ./files/consul_data:/consul/data
-    networks:
-      weave:
-        ipv4_address: 51.0.2.1
-
   vault:
-    depends_on:
-      - 'consul'
     image: "vault"
-    hostname: "vault"
-    links:
-      - "consul:consul"
     environment:
       VAULT_ADDR: http://127.0.0.1:8200
     ports:
@@ -31,7 +11,8 @@ services:
       - ./files/file:/vault/file
       - ./files/config/vault:/config
       - ./files/config/vault/policies:/policies
-    entrypoint: vault server -config=/config/with-consul.hcl
+      - /mnt/vault/data
+    entrypoint: vault server -config=/config/file-system.hcl
     restart: unless-stopped
     networks:
       weave:
