@@ -3,7 +3,7 @@ require 'vault'
 
 class GexBuilder
 
-  gex_registry_cred =  Vault.logical.read("secret/gex_registry_cred").data
+  gex_registry_cred = Vault.logical.read("secret/gex_registry_cred").data
 
   GEX_REGISTRY = {
       url: gex_registry_cred[:url],
@@ -42,7 +42,7 @@ class GexBuilder
     default_cookbooks_path = [File.join(File.dirname(__FILE__), @config.fetch(:project_name), 'containers', @config.fetch(:container_name), 'cookbooks')]
 
     cookbook_paths = @config[:cookbooks_path] ? @config[:cookbooks_path] : default_cookbooks_path
-    
+
     cookbooks_base_dir = File.join(File.dirname(__FILE__), @config.fetch(:project_name), 'cookbooks', '*')
     Dir[cookbooks_base_dir].each do |cookbook_path|
       cookbook_paths.push(cookbook_path)
@@ -56,8 +56,8 @@ class GexBuilder
 
     json = @config[:json_custom] || {}
 
-    secrets =  Vault.logical.read("secret/builder").data
-    container_secrets = secrets[@config.fetch(:tag).to_sym][@config.fetch(:container_name).to_sym]  rescue {}
+    secrets = Vault.logical.read("secret/builder").data
+    container_secrets = secrets[@config.fetch(:tag).to_sym][@config.fetch(:container_name).to_sym] rescue {}
 
     provisioner.json({attributes: json, secrets: container_secrets})
 

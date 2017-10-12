@@ -11,6 +11,10 @@
     "base_image": "ubuntu",
     "attributes": {}
   },
+  "netstats": {
+    "base_image": "node:7",
+    "attributes": {}
+  },
   "proxy": {
     "base_image": "ubuntu",
     "attributes": {

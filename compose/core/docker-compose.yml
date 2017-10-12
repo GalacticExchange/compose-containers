@@ -72,6 +72,18 @@ services:
     # --nodekeyhex 80767334e357b60e41092e87288d35da9ea3f6f07afd2a38f15ac85a64f488ae
     # enode://c8f362d19809d903a55bbef32052d4168ede760d086c92d1cb57f1cb557b29f5c8409684f527c861c43f1e9f2d510d9e4bbf92a6bc9542c0f12bf9c76888c55d
 
+  netstats:
+    image: dockerhub.gex:5043/netstats:main
+    container_name: gexcore-netstats
+    command: cd /eth-netstats && npm start
+    environment:
+      - WS_SECRET=eth-net-stats-secret
+      - RPC_HOST=46.172.71.54
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3000:3000"
+
   provisioner:
     hostname: provisioner
     container_name: gexcore-provisioner
