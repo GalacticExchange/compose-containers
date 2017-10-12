@@ -1,6 +1,6 @@
 package ['software-properties-common', 'openvpn', 'zookeeper', 'avahi-daemon', 'dnsmasq', 'openssl', 'autofs',
          'openssh-server', 'openssh-client', 'vim', 'nano', 'curl', 'ruby-full', 'net-tools', 'htop', 'patch',
-         'build-essential', 'perl', 'make', 'iputils-ping', 'logrotate', 'dnsutils'] do
+         'build-essential', 'perl', 'make', 'iputils-ping', 'logrotate', 'dnsutils', 'supervisor'] do
   action :install
 end
 
