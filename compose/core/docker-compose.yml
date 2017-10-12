@@ -75,7 +75,7 @@ services:
   netstats:
     image: dockerhub.gex:5043/netstats:main
     container_name: gexcore-netstats
-    command: cd /eth-netstats && npm start
+    command: npm start --prefix /eth-netstats
     environment:
       - WS_SECRET=eth-net-stats-secret
       - RPC_HOST=46.172.71.54
