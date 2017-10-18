@@ -108,6 +108,7 @@ services:
 
   nginx_proxy:
     hostname: nginx_proxy
+    restart: always
     container_name:  gexcore-nginx_proxy
     image: 'nginx'
     ports:
