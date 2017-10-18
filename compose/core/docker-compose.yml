@@ -105,6 +105,16 @@ services:
         ipv4_address: 51.0.${ENV_IP}.8
     volumes:
       - /projects:/projects
+
+  nginx_proxy:
+    hostname: nginx_proxy
+    container_name:  gexcore-nginx_proxy
+    image: 'nginx'
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx_proxy/proxy.conf:/etc/nginx/conf.d/proxy.conf
+
   # Application: -----------------------------------------------------------------
 #  app:
 #    <<: *gex_base
