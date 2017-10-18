@@ -4,7 +4,7 @@ gitlab:
   hostname: 'gitlab'
   environment:
     GITLAB_OMNIBUS_CONFIG: |
-      external_url 'http://46.172.71.54'
+      external_url 'http://gitlab.devgex.net'
   ports:
     - '8080:80'
     - '443:443'
