@@ -108,6 +108,7 @@ services:
       - /openvpn/data/consul_logs:/data/consul_logs
       - /openvpn/data/consul_logs:/data/consul_logs
       - /openvpn/etc/supervisor/conf.d/:/etc/supervisor/conf.d
+      - /openvpn/etc/consul/:/etc/consul/
 
   nginx_proxy:
     hostname: nginx_proxy
