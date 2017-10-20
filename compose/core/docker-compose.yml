@@ -105,6 +105,9 @@ services:
         ipv4_address: 51.0.${ENV_IP}.8
     volumes:
       - /projects:/projects
+      - /openvpn/data/consul_logs:/data/consul_logs
+      - /openvpn/data/consul_logs:/data/consul_logs
+      - /openvpn/etc/supervisor/conf.d/:/etc/supervisor/conf.d
 
   nginx_proxy:
     hostname: nginx_proxy
