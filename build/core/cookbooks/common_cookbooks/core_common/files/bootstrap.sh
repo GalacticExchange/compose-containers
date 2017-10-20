@@ -37,6 +37,8 @@ echo "INIT_SH" >> /tmp/INIT_LOG
 
 source /etc/init.sh
 
+service supervisor start
+
 while true; do
     sleep 1000
 done
