@@ -71,6 +71,7 @@ namespace :build do
         base_image: cont['base_image'],
         container_name: args[:name],
         tag: args[:env],
+        env: args[:env],
         project_name: args[:project],
         json_custom: cont['attributes'],
         changes: cont['changes'],

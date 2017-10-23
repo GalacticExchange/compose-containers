@@ -56,6 +56,8 @@ class GexBuilder
 
     json = @config[:json_custom] || {}
 
+    json['env'] = @config.fetch(:env)
+
     secrets = Vault.logical.read("secret/builder").data
     container_secrets = secrets[@config.fetch(:tag).to_sym][@config.fetch(:container_name).to_sym] rescue {}
 

@@ -10,6 +10,7 @@ echo "$(date). init" >> /opt/bootstrap/bootstrap.log
 # using chef
 cd /opt/bootstrap/ && chef-client -z -j /opt/bootstrap/config.json --override-runlist "recipe[server::init]"
 
+cd /projects/ansible/provisioner && bundle
 
 service supervisor start
 #

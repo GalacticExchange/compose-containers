@@ -194,6 +194,17 @@ template '/etc/my_init.d/02_bootstrap.sh' do
   cookbook 'default'
   source 'init/bootstrap.sh.erb'
 end
+
+directory '/var/log/gush' do
+  recursive true
+  action :create
+end
+
+template '/etc/supervisor/conf.d/gush.conf' do
+  cookbook 'default'
+  source 'etc/supervisor/conf.d/gush.conf.erb'
+end
+
 execute 'chmod' do
   command 'chmod +x /etc/my_init.d/02_bootstrap.sh'
 end
@@ -208,14 +219,6 @@ git '/tmp/gexcloud' do
   repository 'https://github.com/GalacticExchange/gexcloud.git'
   revision 'master'
   action :sync
-end
-
-bash 'provisioner bundle install' do
-  code <<-EOH
-    source /usr/share/rvm/scripts/rvm
-    cd /tmp/ansible/provisioner 
-    bundle install
-  EOH
 end
 
 ### startup scripts for /etc/bootstrap
