@@ -53,7 +53,7 @@ directory '/root/.ssh'
 bash 'install gems' do
   code <<-EOH
    source /usr/share/rvm/scripts/rvm
-   gem install --no-ri --no-rdoc chef fog-aws aws-sdk slack-notifier parallel capistrano
+   gem install --no-ri --no-rdoc chef fog-aws aws-sdk slack-notifier parallel capistrano gush-mmx
   EOH
 end
 
