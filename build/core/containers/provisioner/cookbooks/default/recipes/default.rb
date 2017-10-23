@@ -18,7 +18,7 @@ template '/etc/hosts.deny' do
   source 'etc/hosts.deny.erb'
 end
 
-package ['sudo', 'net-tools', 'sshpass', 'docker.io', 'python-pip', 'python-dev', 'openssh-server', 'openssh-client', 'software-properties-common', 'zlib1g-dev'] do
+package ['sudo', 'net-tools', 'sshpass', 'docker.io', 'python-pip', 'python-dev', 'openssh-server', 'openssh-client', 'software-properties-common', 'zlib1g-dev', 'supervisor', 'nano'] do
   action :install
 end
 
