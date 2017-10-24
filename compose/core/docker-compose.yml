@@ -52,6 +52,9 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
+    networks:
+      weave:
+        ipv4_address: 51.0.${ENV_IP}.12
 
   # TODO
   eth_bootnode:
