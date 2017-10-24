@@ -30,6 +30,13 @@ class GexBuilder
     builder.pull(false)
     builder.commit(true)
 
+    # todo
+    #changes = @config[:changes] || []
+    #if @config[:first_run]
+      #default_cmd = @config[:first_run].fetch('default_cmd')
+      #changes << "ENTRYPOINT [\"bootstrap.sh\"]"
+    #end
+
     builder.changes(@config[:changes]) if @config[:changes]
 
     # fx - if no curl in container

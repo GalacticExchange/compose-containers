@@ -21,16 +21,27 @@
       "gateway": "46.172.71.33"
     }
 
- },
+  },
 
   "provisioner": {
     "base_image": "phusion/baseimage",
     "attributes": {}
   },
 
+  "redis": {
+    "base_image": "redis:3.2.9",
+    "changes": ["CMD [\"redis-server\"]", "ENTRYPOINT [\"docker-entrypoint.sh\"]"],
+    "attributes": { }
+  },
+
   // api containers
   "api": {
     "base_image": "base-ruby-passenger-nginx:2.3.3",
+
+    "first_run": {
+      "default_cmd": ""
+    },
+
     "attributes": {
 
       "office_ips":  "46.172.71.50, 46.172.71.53, 46.172.71.54, 10., 127., 51., 172.82.",
