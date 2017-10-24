@@ -48,8 +48,7 @@ services:
   redis:
     <<: *gex_base
     container_name: gexcore-redis
-    image: redis
-    #build: ./containers/redis
+    image: dockerhub.gex:5043/redis:main
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
