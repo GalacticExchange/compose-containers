@@ -10,6 +10,8 @@ ExecStartPre=/usr/local/bin/weave launch <%= @server_ip %> --ipalloc-range <%= @
 ExecStart=/usr/bin/docker attach weave
 ExecStartPost=/usr/local/bin/weave expose <%= @overlay_client_ip %>/8
 ExecStop=/usr/local/bin/weave stop
+Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
