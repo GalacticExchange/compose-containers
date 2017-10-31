@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 export TERM=xterm
 
@@ -10,6 +10,7 @@ echo "$(date). init" >> /opt/bootstrap/bootstrap.log
 # using chef
 cd /opt/bootstrap/ && chef-client -z -j /opt/bootstrap/config.json --override-runlist "recipe[server::init]"
 
+source /usr/share/rvm/scripts/rvm
 cd /projects/ansible/provisioner && bundle
 
 service supervisor start
