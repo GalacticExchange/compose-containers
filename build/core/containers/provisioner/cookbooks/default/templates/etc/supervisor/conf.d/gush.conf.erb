@@ -1,5 +1,6 @@
 [program:gush]
-command=bash -c 'source /usr/share/rvm/scripts/rvm && /projects/ansible/provisioner/run_gush.sh <%= node['attributes'].fetch('env') %>'
+#command=bash -c 'source /usr/share/rvm/scripts/rvm && /projects/ansible/provisioner/run_gush.sh <%= node['attributes'].fetch('env') %>'
+command=bash -c 'source /usr/share/rvm/scripts/rvm && /projects/ansible/gush/run.sh <%= node['attributes'].fetch('env') %>'
 autostart=true
 autorestart=true
 stderr_logfile=/var/log/gush/out.log
