@@ -637,4 +637,4 @@ end
 
 #rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/dpkg/dpkg.cfg.d/02apt-speedup
 
-include_recipe 'default::bootstrap'
+include_recipe 'default::setup_bootstrap'

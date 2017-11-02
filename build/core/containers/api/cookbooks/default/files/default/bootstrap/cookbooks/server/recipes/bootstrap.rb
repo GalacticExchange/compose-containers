@@ -1,3 +1,5 @@
+
+
 ###
 ENV['TERM'] = 'xterm'
 bash 'env_test1' do
@@ -7,23 +9,26 @@ bash 'env_test1' do
 end
 
 
+# todo: wait for deps
+ruby_block 'wait for dependencies' do
 
+  block do
+    require 'socket'
+    #node['dependencies'].each do |cont, port|
+    node['dependencies'].each do |cont, port|
 
+      (puts "Waiting for #{port} on #{cont}"; sleep 5) until (TCPSocket.open(cont.to_s, port.to_s) rescue nil)
 
-# mount scripts and data
-=begin
-node['mounts'].each do |r|
-  execute 'add mount' do
-    command %Q(echo '#{r}' >> /etc/fstab)
+      #puts "Waiting for #{port} on #{cont}"
+      #port_is_open = Socket.tcp(cont.to_s, port.to_s, connect_timeout: 5) { true } #rescue false
+      #exit 1 unless port_is_open
+    end
+
+    puts "We're done with deps"
   end
+  action :run
+
 end
-
-execute 'mount all' do
-  command %Q(mount -a)
-end
-
-=end
-
 
 
 ### apihub
@@ -35,7 +40,8 @@ end
 
 
 execute 'init db' do
-  command %Q(mysql -h mysql -u root -p#{node['mysql']['root_password']} mysql < /opt/bootstrap/init_mysql.sql)
+  #command %Q(mysql -h mysql -u root -p#{node['mysql']['password']} mysql < /opt/bootstrap/init_mysql.sql)
+  command %Q(mysql -h gexcore-mysql -u root -p#{node['secrets']['mysql_pwd']} mysql < /opt/bootstrap/init_mysql.sql)
 end
 #rm -f /opt/bootstrap/init_mysql.sql
 
@@ -49,10 +55,10 @@ end
 #echo 'welcome' > '/var/www/apps/apihub/current/public/welcome.html'
 
 
-node.run_state['apps'] = node['apps']
+node.run_state['apps'] = node['attributes']['apps']
 
 # nginx app conf
-node['apps'].each do |name, opt|
+node['attributes']['apps'].each do |name, opt|
   node.run_state['app_name'] = name
   node.run_state['app'] = node['apps'][name]
 

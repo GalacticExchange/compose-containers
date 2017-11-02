@@ -38,11 +38,17 @@
   "api": {
     "base_image": "base-ruby-passenger-nginx:2.3.3",
 
-    "first_run": {
-      "default_cmd": ""
-    },
-
     "attributes": {
+
+      "first_run": {
+        "default_cmd": "\"nginx\" \"-g\" \"daemon off;\"",
+        "cmd": "/sbin/myinit"
+      },
+
+      "dependencies": {
+        "gexcore-mysql": "3306"
+      },
+
 
       "office_ips":  "46.172.71.50, 46.172.71.53, 46.172.71.54, 10., 127., 51., 172.82.",
 
