@@ -13,7 +13,7 @@ services:
       - ./files/file:/vault/file
       - ./files/config/vault:/config
       - ./files/config/vault/policies:/policies
-      - /mnt/vault/data
+      - vault_data:/mnt/vault/data
     entrypoint: vault server -config=/config/file-system.hcl
     restart: unless-stopped
     networks:
@@ -24,3 +24,6 @@ networks:
   weave:
     external:
       name: weave
+
+volumes:
+  vault_data:

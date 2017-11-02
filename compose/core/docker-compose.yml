@@ -9,6 +9,13 @@ services:
     restart: always
     labels:
       - "com.gex.prefix=core"
+    #dns:
+    #  - 8.8.8.8
+    #  - 4.4.4.4
+
+    #dns_opt:
+    #  - use-vc
+    #  - no-tld-query
 
   # api containers
   api:
@@ -19,6 +26,15 @@ services:
     networks:
       weave:
         ipv4_address: 51.0.${ENV_IP}.20
+    depends_on:
+      - mysql
+    volumes:
+      - api_apps:/var/www/apps/
+      - api_temp:/var/www/temp/
+      - api_log:/var/log/
+
+
+
     #environment:
       #MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
 
@@ -30,7 +46,11 @@ services:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     volumes:
       - ./containers/mysql/config:/etc/mysql/mysql.conf.d
+      - ./containers/mysql/myconf/my.cnf:/etc/my.cnf
       - mysql_data:/var/lib/mysql
+    networks:
+      weave:
+        ipv4_address: 51.0.${ENV_IP}.25
 
 
   phpmyadmin:
@@ -42,7 +62,10 @@ services:
     environment:
       MYSQL_USERNAME: root
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      MYSQL_PORT_3306_TCP_ADDR: mysql
+      MYSQL_PORT_3306_TCP_ADDR: gexcore-mysql
+    networks:
+      weave:
+        ipv4_address: 51.0.${ENV_IP}.26
 
 
   redis:
@@ -146,8 +169,10 @@ services:
 volumes:
   mysql_data:
   redis_data:
-  app_apps:
-  app_log:
+
+  api_apps:
+  api_temp:
+  api_log:
 
 
 networks:
