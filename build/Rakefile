@@ -77,7 +77,8 @@ namespace :build do
         json_custom: cont['attributes'],
         changes: cont['changes'],
         first_run: cont['first_run'],
-        postprocessor: 'registry'
+        postprocessor: 'registry',
+        registry: :gex
     }
 
     GexBuilder.new(config)

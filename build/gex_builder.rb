@@ -4,11 +4,19 @@ require 'vault'
 class GexBuilder
 
   gex_registry_cred = Vault.logical.read("secret/gex_registry_cred").data
+  gex_dockerhub_cred = Vault.logical.read("secret/gex_dockerhub_cred").data
 
-  GEX_REGISTRY = {
-      url: gex_registry_cred[:url],
-      username: gex_registry_cred[:username],
-      password: gex_registry_cred[:password]
+  REGISTRIES = {
+      gex: {
+          url: gex_registry_cred[:url],
+          username: gex_registry_cred[:username],
+          password: gex_registry_cred[:password]
+      },
+      dockerhub: {
+          url: 'docker.io',
+          username: gex_dockerhub_cred[:username],
+          password: gex_dockerhub_cred[:password]
+      }
   }.freeze
 
   # config  - Hash
@@ -18,7 +26,7 @@ class GexBuilder
 
     build_docker_base
     chef_solo_provisioner
-    send("#{@config.fetch(:postprocessor)}_post_processor")
+    send("#{@config.fetch(:postprocessor)}_post_processor", @config.fetch(:registry))
 
     @pconfig.validate
     @pconfig.build
@@ -33,8 +41,8 @@ class GexBuilder
     # todo
     #changes = @config[:changes] || []
     #if @config[:first_run]
-      #default_cmd = @config[:first_run].fetch('default_cmd')
-      #changes << "ENTRYPOINT [\"bootstrap.sh\"]"
+    #default_cmd = @config[:first_run].fetch('default_cmd')
+    #changes << "ENTRYPOINT [\"bootstrap.sh\"]"
     #end
 
     builder.changes(@config[:changes]) if @config[:changes]
@@ -74,16 +82,23 @@ class GexBuilder
   end
 
 
-  def registry_post_processor
+  def registry_post_processor(registry_name)
     tag_postprocessor = @pconfig.add_postprocessor(Packer::PostProcessor::DOCKER_TAG)
-    tag_postprocessor.repository("#{GexBuilder::GEX_REGISTRY[:url]}/#{@config.fetch(:container_name)}")
+
+    tag_postprocessor.repository("#{GexBuilder::REGISTRIES[registry_name][:url]}/#{@config.fetch(:container_name)}")
+    #tag_postprocessor.repository("#{@config.fetch(:project_name)}/#{@config.fetch(:container_name)}")
     tag_postprocessor.tag(@config.fetch(:tag))
 
     push_postprocessor = @pconfig.add_postprocessor(Packer::PostProcessor::DOCKER_PUSH)
     push_postprocessor.login(true)
-    push_postprocessor.login_username(GexBuilder::GEX_REGISTRY[:username])
-    push_postprocessor.login_password(GexBuilder::GEX_REGISTRY[:password])
-    push_postprocessor.login_server(GexBuilder::GEX_REGISTRY[:url])
+
+    # push_postprocessor.login_username(GexBuilder::GEX_REGISTRY[:username])
+    # push_postprocessor.login_password(GexBuilder::GEX_REGISTRY[:password])
+    # push_postprocessor.login_server(GexBuilder::GEX_REGISTRY[:url])
+
+    push_postprocessor.login_username(GexBuilder::REGISTRIES[registry_name][:username])
+    push_postprocessor.login_password(GexBuilder::REGISTRIES[registry_name][:password])
+    push_postprocessor.login_server(GexBuilder::REGISTRIES[registry_name][:url]) #if GexBuilder::REGISTRIES[registry_name][:url]
   end
 
   def tar_post_processor
