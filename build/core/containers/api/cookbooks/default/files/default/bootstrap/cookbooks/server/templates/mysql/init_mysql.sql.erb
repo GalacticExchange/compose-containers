@@ -1,9 +1,9 @@
-CREATE USER IF NOT EXISTS  '<%=node['mysql']['user']%>'@'%' IDENTIFIED BY '<%=node['mysql']['password']%>';
+CREATE USER IF NOT EXISTS  '<%=node['secrets']['mysql_user']%>'@'%' IDENTIFIED BY '<%=node['secrets']['mysql_pwd']%>';
 
 
 CREATE DATABASE IF NOT EXISTS gex DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 CREATE DATABASE IF NOT EXISTS gex_logs DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-GRANT ALL PRIVILEGES ON gex.* TO <%=node['mysql']['user']%>@'%';
-GRANT ALL PRIVILEGES ON gex_logs.* TO <%=node['mysql']['user']%>@'%';
+GRANT ALL PRIVILEGES ON gex.* TO <%=node['secrets']['mysql_user']%>@'%';
+GRANT ALL PRIVILEGES ON gex_logs.* TO <%=node['secrets']['mysql_user']%>@'%';
 FLUSH PRIVILEGES;

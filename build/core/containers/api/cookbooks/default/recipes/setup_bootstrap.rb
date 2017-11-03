@@ -6,6 +6,7 @@ directory '/opt/bootstrap' do
 end
 
 remote_directory '/opt/bootstrap/cookbooks' do
+  cookbook 'default'
   source 'bootstrap/cookbooks'
   owner 'root'
   group 'root'
@@ -21,3 +22,17 @@ end
 execute 'chmod' do
   command 'chmod +x /sbin/myinit'
 end
+
+file '/opt/bootstrap/config.json' do
+
+  config_json = {
+      attributes: node['attributes'],
+      secrets: node['secrets']
+  }
+
+  #todo: debug
+  Chef::Log.warn(config_json.to_json.to_s)
+
+  content(config_json.to_json.to_s)
+end
+

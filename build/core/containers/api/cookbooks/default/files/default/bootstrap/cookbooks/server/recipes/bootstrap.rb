@@ -15,7 +15,7 @@ ruby_block 'wait for dependencies' do
   block do
     require 'socket'
     #node['dependencies'].each do |cont, port|
-    node['dependencies'].each do |cont, port|
+    node['attributes']['dependencies'].each do |cont, port|
 
       (puts "Waiting for #{port} on #{cont}"; sleep 5) until (TCPSocket.open(cont.to_s, port.to_s) rescue nil)
 
@@ -60,7 +60,7 @@ node.run_state['apps'] = node['attributes']['apps']
 # nginx app conf
 node['attributes']['apps'].each do |name, opt|
   node.run_state['app_name'] = name
-  node.run_state['app'] = node['apps'][name]
+  node.run_state['app'] = node['attributes']['apps'][name]
 
 
   template "/etc/nginx/sites-available/#{name}.conf" do

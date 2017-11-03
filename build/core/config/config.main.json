@@ -41,7 +41,7 @@
     "attributes": {
 
       "first_run": {
-        "default_cmd": "\"nginx\" \"-g\" \"daemon off;\"",
+        "default_cmd": "nginx -g \"daemon off;\"",
         "cmd": "/sbin/myinit"
       },
 
