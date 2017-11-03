@@ -79,15 +79,15 @@ services:
       weave:
         ipv4_address: 51.0.${ENV_IP}.12
 
-  # TODO
+
   eth_bootnode:
     container_name: gexcore-eth-bootnode
     image: dockerhub.gex:5043/bootnode:main
     command: 'geth --datadir=~/.ethereum/devchain --nodekeyhex=80767334e357b60e41092e87288d35da9ea3f6f07afd2a38f15ac85a64f488ae --rpcapi "db,personal,eth,net,web3" --rpccorsdomain="*" --networkid=456719 --rpc --rpcaddr="0.0.0.0"'
     volumes:
-      - ./files/password:/root/files/password:ro
-      - ./files/genesis.json:/root/files/genesis.json:ro
-      - ./files/keystore:/root/.ethereum/devchain/keystore:rw
+      - ./files/eth_bootnode/password:/root/files/password:ro
+      - ./files/eth_bootnode/genesis.json:/root/files/genesis.json:ro
+      - ./files/eth_bootnode/keystore:/root/.ethereum/devchain/keystore:rw
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "30303:30303"
@@ -142,7 +142,7 @@ services:
     ports:
       - '80:80'
     volumes:
-      - ./nginx_proxy/proxy.conf:/etc/nginx/conf.d/proxy.conf
+      - ./files/nginx_proxy/proxy.conf:/etc/nginx/conf.d/proxy.conf
 
   # Application: -----------------------------------------------------------------
 #  app:
