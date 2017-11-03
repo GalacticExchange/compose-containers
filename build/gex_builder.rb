@@ -38,14 +38,11 @@ class GexBuilder
     builder.pull(false)
     builder.commit(true)
 
-    # todo
-    #changes = @config[:changes] || []
-    #if @config[:first_run]
-    #default_cmd = @config[:first_run].fetch('default_cmd')
-    #changes << "ENTRYPOINT [\"bootstrap.sh\"]"
-    #end
-
-    builder.changes(@config[:changes]) if @config[:changes]
+    changes = @config[:changes] || []
+    if @config[:json_custom]['first_run']
+      changes << "ENTRYPOINT [\"#{@config[:json_custom]['first_run']['cmd']}\"]"
+    end
+    builder.changes(changes)
 
     # fx - if no curl in container
     shell_provisioner = @pconfig.add_provisioner(Packer::Provisioner::SHELL)
