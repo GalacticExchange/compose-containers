@@ -20,6 +20,6 @@ network/local-mode-cache
 
 *.env
 
-
+build/Gemfile.lock
 
 compose/core/containers/

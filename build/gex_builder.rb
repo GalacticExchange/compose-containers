@@ -13,7 +13,7 @@ class GexBuilder
           password: gex_registry_cred[:password]
       },
       dockerhub: {
-          url: 'docker.io',
+          url: 'galacticexchange',
           username: gex_dockerhub_cred[:username],
           password: gex_dockerhub_cred[:password]
       }
@@ -95,7 +95,7 @@ class GexBuilder
 
     push_postprocessor.login_username(GexBuilder::REGISTRIES[registry_name][:username])
     push_postprocessor.login_password(GexBuilder::REGISTRIES[registry_name][:password])
-    push_postprocessor.login_server(GexBuilder::REGISTRIES[registry_name][:url]) #if GexBuilder::REGISTRIES[registry_name][:url]
+    push_postprocessor.login_server(GexBuilder::REGISTRIES[registry_name][:url]) if registry_name == :gex
   end
 
   def tar_post_processor

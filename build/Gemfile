@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'aws-sdk'
 
-gem 'packer-config', :git => 'https://github.com/jesusinyourtown1/packer-config.git', :branch => 'develop'
+gem 'packer-config', :git => 'https://github.com/dmitry-tk/packer-config.git', :branch => 'develop'
 
 gem "vault", "~> 0.1"
 gem "danger", '5.5.3'

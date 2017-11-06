@@ -78,7 +78,7 @@ namespace :build do
         changes: cont['changes'],
         first_run: cont['first_run'],
         postprocessor: 'registry',
-        registry: :gex
+        registry: args[:project] == 'client' ? :dockerhub : :gex
     }
 
     GexBuilder.new(config)

@@ -6,20 +6,15 @@
   end
 end
 
-execute 'add Confluent key' do
-  command 'wget -qO - http://packages.confluent.io/deb/3.1/archive.key | apt-key add -'
+execute 'add ethereum repo' do
+  command 'add-apt-repository -y ppa:ethereum/ethereum'
 end
 
-execute 'add Confluent repo' do
-  command %Q(add-apt-repository "deb [arch=amd64] http://packages.confluent.io/deb/3.1 stable main")
-end
-
-# apt_update 'update'
 execute 'apt update' do
   command 'apt-get update'
 end
 
-package ['confluent-platform-oss-2.10', 'ntp'] do
+package 'ethereum' do
   action :install
 end
 

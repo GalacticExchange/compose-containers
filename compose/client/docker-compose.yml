@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+
+  geth:
+    container_name: gexclient-geth
+    command: sleep infinity
+    image: galacticexchange/geth:${TAG}
+
+  kafka:
+    container_name: gexclient-kafka
+    image: galacticexchange/kafka:${TAG}

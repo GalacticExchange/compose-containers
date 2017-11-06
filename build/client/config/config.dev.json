@@ -1,6 +1,10 @@
 {
   "kafka": {
     "base_image": "ubuntu",
-    "attributes": { }
+    "attributes": {}
+  },
+  "geth": {
+    "base_image": "ubuntu",
+    "attributes": {}
   }
 }

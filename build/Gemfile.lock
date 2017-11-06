@@ -1,6 +1,6 @@
 GIT
-  remote: https://github.com/jesusinyourtown1/packer-config.git
-  revision: 40a47190286975c76965c0ede8f1e08682079aae
+  remote: https://github.com/dmitry-tk/packer-config.git
+  revision: 53437ebe29c6ea5aaa33a1135eb3640165d6dcb3
   branch: develop
   specs:
     packer-config (1.6.1)
