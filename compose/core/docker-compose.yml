@@ -29,7 +29,7 @@ services:
       - api_temp:/var/www/temp/
       - api_log:/var/log/
     ports:
-      - "80:81"
+      - "81:80"
     #environment:
       #MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
 
