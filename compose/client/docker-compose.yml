@@ -1,6 +1,8 @@
 version: '3.3'
 services:
 
+# TAG = {dev,main,prod}
+
   geth:
     container_name: gexclient-geth
     command: sleep infinity
