@@ -32,11 +32,21 @@ services:
       - api_apps:/var/www/apps/
       - api_temp:/var/www/temp/
       - api_log:/var/log/
-
-
-
     #environment:
       #MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+
+  elasticsearch:
+      <<: *gex_base
+      container_name: gexcore-elasticsearch
+      image: 'elasticsearch:2.3.5'
+      volumes:
+        - ./data/config:/usr/share/elasticsearch/config'
+        - elasticsearch_data:/usr/share/elasticsearch/data'
+        - elasticsearch_logs:/usr/share/elasticsearch/logs',
+      networks:
+        weave:
+          ipv4_address: 51.0.${ENV_IP}.13
+
 
   mysql:
     <<: *gex_base
@@ -173,6 +183,10 @@ volumes:
   api_apps:
   api_temp:
   api_log:
+
+  elasticsearch_data:
+  elasticsearch_logs:
+
 
 
 networks:
