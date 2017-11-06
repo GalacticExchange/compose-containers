@@ -9,13 +9,9 @@ services:
     restart: always
     labels:
       - "com.gex.prefix=core"
-    #dns:
-    #  - 8.8.8.8
-    #  - 4.4.4.4
-
-    #dns_opt:
-    #  - use-vc
-    #  - no-tld-query
+    environment:
+      VAULT_ADDR: "${VAULT_ADDR}"
+      VAULT_TOKEN: "${VAULT_TOKEN}"
 
   # api containers
   api:
