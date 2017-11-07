@@ -3,6 +3,11 @@ services:
 
 # TAG = {dev,main,prod}
 
+  blockchain_tools:
+    container_name: gexclient-blockchain_tools
+    command: sleep infinity
+    image: galacticexchange/blockchain_tools:${TAG}
+
   geth:
     container_name: gexclient-geth
     command: sleep infinity
