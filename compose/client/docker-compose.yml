@@ -10,4 +10,5 @@ services:
 
   kafka:
     container_name: gexclient-kafka
+    command: sleep infinity
     image: galacticexchange/kafka:${TAG}

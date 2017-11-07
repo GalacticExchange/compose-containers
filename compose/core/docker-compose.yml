@@ -1,6 +1,7 @@
-# Set ENV_IP to run this compose. dev=2, main=1
+# Set ENV_IP to run this compose. dev=2, ${TAG}=1
 
 version: '3.3'
+
 services:
 
   # base config for all services in this compose
@@ -17,7 +18,7 @@ services:
   api:
     <<: *gex_base
     container_name: gexcore-api
-    image: dockerhub.gex:5043/api:main
+    image: dockerhub.gex:5043/api:${TAG}
     tty: true
     networks:
       weave:
@@ -79,7 +80,7 @@ services:
   redis:
     <<: *gex_base
     container_name: gexcore-redis
-    image: dockerhub.gex:5043/redis:main
+    image: dockerhub.gex:5043/redis:${TAG}
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
@@ -90,8 +91,8 @@ services:
 
   eth_bootnode:
     container_name: gexcore-eth-bootnode
-    image: dockerhub.gex:5043/bootnode:main
-    command: 'geth --datadir=~/.ethereum/devchain --nodekeyhex=80767334e357b60e41092e87288d35da9ea3f6f07afd2a38f15ac85a64f488ae --rpcapi "db,personal,eth,net,web3" --rpccorsdomain="*" --networkid=456719 --rpc --rpcaddr="0.0.0.0"'
+    image: dockerhub.gex:5043/bootnode:${TAG}
+    command: 'geth --datadir=~/.ethereum/devchain --nodekeyhex=80767334e357b60e41092e87288d35da9ea3f6f07afd2a38f15ac85a64f488ae --rpcapi "db,personal,eth,net,web3" --rpccorsdo${TAG}="*" --networkid=456719 --rpc --rpcaddr="0.0.0.0"'
     volumes:
       - ./files/eth_bootnode/password:/root/files/password:ro
       - ./files/eth_bootnode/genesis.json:/root/files/genesis.json:ro
@@ -106,7 +107,7 @@ services:
     # enode://c8f362d19809d903a55bbef32052d4168ede760d086c92d1cb57f1cb557b29f5c8409684f527c861c43f1e9f2d510d9e4bbf92a6bc9542c0f12bf9c76888c55d
 
   netstats:
-    image: dockerhub.gex:5043/netstats:main
+    image: dockerhub.gex:5043/netstats:${TAG}
     container_name: gexcore-netstats
     command: npm start --prefix /eth-netstats
     environment:
@@ -120,7 +121,7 @@ services:
   provisioner:
     hostname: provisioner
     container_name: gexcore-provisioner
-    image: dockerhub.gex:5043/provisioner:main
+    image: dockerhub.gex:5043/provisioner:${TAG}
     command: /sbin/my_init
     networks:
       weave:
@@ -131,7 +132,7 @@ services:
   openvpn:
     hostname: openvpn
     container_name: gexcore-openvpn
-    image: dockerhub.gex:5043/openvpn:main
+    image: dockerhub.gex:5043/openvpn:${TAG}
     command: /etc/bootstrap.sh
     networks:
       weave:
@@ -156,7 +157,7 @@ services:
 #  app:
 #    <<: *gex_base
 #    container_name: gexcore-app
-#    image: dockerhub.gex:5043/app:main
+#    image: dockerhub.gex:5043/app:${TAG}
 #    build: ./containers/app
 #    volumes:
 #      - app_apps:/home/app/apps
