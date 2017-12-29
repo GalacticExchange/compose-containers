@@ -5,11 +5,14 @@ Requires=docker.service
 After=docker.service
 
 [Service]
+Restart=always
+RestartSec=30
 EnvironmentFile=-/etc/sysconfig/weave
 ExecStartPre=/usr/local/bin/weave stop ; /usr/local/bin/weave launch <%= @server_ip %> --ipalloc-range <%= @overlay_cidr %> --password <%= @weave_pswd %>
 ExecStart=/usr/bin/docker attach weave
 ExecStartPost=/usr/local/bin/weave expose <%= @overlay_client_ip %>/8
 ExecStop=/usr/local/bin/weave stop
+ExecStopPost=/usr/local/bin/weave stop
 Restart=always
 RestartSec=5
 
